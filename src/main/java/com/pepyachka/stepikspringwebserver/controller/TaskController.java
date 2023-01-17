@@ -21,29 +21,29 @@ public class TaskController {
         return taskRepository.findAll();
     }
 
-    @GetMapping("/task/{id}")
+    @GetMapping("/tasks/{id}")
     public Task getTaskById(@PathVariable Long id) {
         return taskRepository.findById(id).orElse(null);
     }
 
-    @PutMapping("/task/{id}")
+    @PutMapping("/tasks/{id}")
     public Task update(@PathVariable Long id, @RequestBody Task task) {
         task.setId(id);
         return taskRepository.save(task);
     }
 
-    @DeleteMapping("/task/{id}")
+    @DeleteMapping("/tasks/{id}")
     public void delete(@PathVariable Long id) {
         taskRepository.deleteById(id);
     }
 
-    @PatchMapping("/task/{id}")
+    @PatchMapping("/tasks/{id}")
     public void patchMethod(@PathVariable Long id, @RequestBody Task task) {
         task.setId(id);
         taskRepository.save(task);
     }
 
-    @PatchMapping("/task/{id}:mark-as-done")
+    @PatchMapping("/tasks/{id}:mark-as-done")
     public void patchMethod(@PathVariable Long id) {
         taskRepository.markAsDone(id);
     }
