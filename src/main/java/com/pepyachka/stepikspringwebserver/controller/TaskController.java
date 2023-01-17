@@ -1,7 +1,8 @@
 package com.pepyachka.stepikspringwebserver.controller;
 
 import com.pepyachka.stepikspringwebserver.entity.Task;
-import com.pepyachka.stepikspringwebserver.repository.TaskRepository;
+import com.pepyachka.stepikspringwebserver.service.AccountService;
+import com.pepyachka.stepikspringwebserver.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,43 +10,45 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class TaskController {
 
-    private final TaskRepository taskRepository;
+    private final TaskService taskService;
+    private final AccountService accountService;
 
     @PostMapping("/tasks")
     public Task create(@RequestBody Task task) {
-        return taskRepository.save(task);
+        task.setAccountId(accountService.getCurrentAccount().getId());
+        return taskService.create(task);
     }
 
     @GetMapping("/tasks")
     public Iterable<Task> getAllTasks() {
-        return taskRepository.findAll();
+        return taskService.getAllTasks(accountService.getCurrentAccount().getId());
     }
 
     @GetMapping("/tasks/{id}")
     public Task getTaskById(@PathVariable Long id) {
-        return taskRepository.findById(id).orElse(null);
+        return taskService.getTaskById(id);
     }
 
     @PutMapping("/tasks/{id}")
     public Task update(@PathVariable Long id, @RequestBody Task task) {
         task.setId(id);
-        return taskRepository.save(task);
+        return taskService.updateTask(task);
     }
 
     @DeleteMapping("/tasks/{id}")
     public void delete(@PathVariable Long id) {
-        taskRepository.deleteById(id);
+        taskService.deleteTask(id);
     }
 
     @PatchMapping("/tasks/{id}")
     public void patchMethod(@PathVariable Long id, @RequestBody Task task) {
         task.setId(id);
-        taskRepository.save(task);
+        taskService.updateTask(task);
     }
 
     @PatchMapping("/tasks/{id}:mark-as-done")
     public void patchMethod(@PathVariable Long id) {
-        taskRepository.markAsDone(id);
+        taskService.markAsDone(id);
     }
 }
 

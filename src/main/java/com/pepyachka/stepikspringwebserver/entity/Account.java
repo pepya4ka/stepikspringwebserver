@@ -19,6 +19,5 @@ public class Account {
     private String login;
 
     @Column(name = "password")
-    @JsonIgnore
     private String password;
 }

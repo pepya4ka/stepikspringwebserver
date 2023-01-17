@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountController {
 
     private final AccountService accountService;
-    private final UserDetailsService userDetailsService;
 
     @PostMapping("/accounts/signup")
     public Account create(@RequestBody Account account) {

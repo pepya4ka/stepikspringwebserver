@@ -32,6 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/accounts/signup").permitAll() //registration
                 .anyRequest().authenticated()
                 .and()
+                .logout()
+                .and()
                 .formLogin().loginProcessingUrl("/accounts/signin")
                 .usernameParameter("login").passwordParameter("password")
                 .failureHandler(customAuthenticationFailureHandler)
@@ -45,7 +47,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public DaoAuthenticationProvider authProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -53,7 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
